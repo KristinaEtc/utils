@@ -3,6 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/kardianos/osext"
@@ -49,4 +51,35 @@ func GetConfigFilename() string {
 	}
 
 	return binaryPath + ".config"
+}
+
+// GetPathToDir checked a path to directory - relative or absolute - and formatted it.
+// If it's relative,the function add full path of executable file to it.
+func GetPathToDir(logpath string) (string, error) {
+
+	if filepath.IsAbs(logpath) == true {
+		return logpath, nil
+	} else {
+		filename, err := osext.Executable()
+		if err != nil {
+			return "", err
+		}
+
+		fpath := filepath.Dir(filename)
+		fpath = filepath.Join(fpath, logpath)
+		return fpath, nil
+	}
+}
+
+// Exists returns whether the given file or directory exists or not.
+func Exists(path string) (bool, error) {
+
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
