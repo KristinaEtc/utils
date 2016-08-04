@@ -29,8 +29,8 @@ func GetFromGlobalConf(cf interface{}, whatParsed string) {
 	}
 
 	if err := json.Unmarshal([]byte(file), cf); err != nil {
-		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON : [%s]. For [%s] will be used defaulf options.",
-			whatParsed, err.Error())
+		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON: %s. For [%s] will be used defaulf options.",
+			err.Error(), whatParsed)
 	} else {
 		log.Infof("Parsed [%s] configuration from [%s] file", whatParsed, GetConfigFilename())
 		log.Warn("If a field has wrong format, will be used default value.")
