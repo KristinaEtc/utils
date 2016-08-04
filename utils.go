@@ -29,11 +29,11 @@ func GetFromGlobalConf(cf interface{}, defaultVal interface{}, whatParsed string
 	}
 
 	if err := json.Unmarshal([]byte(file), cf); err != nil {
-		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON : %s. For %s will be used defaulf options.",
+		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON : [%s]. For [%s] will be used defaulf options.",
 			whatParsed, err.Error())
 		cf = defaultVal
 	} else {
-		log.Infof("Parsed %s data from [%s] file", whatParsed, GetConfigFilename())
+		log.Infof("Parsed [%s] configuration from [%s] file", whatParsed, GetConfigFilename())
 	}
 	//log.Debugf("%v", cf)
 }
