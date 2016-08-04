@@ -19,9 +19,9 @@ func init() {
 	log = slf.WithContext(pwdCurr)
 }
 
-// GetGlobalConf unmarshal json-object cf
+// GetFromGlobalConf unmarshal json-object cf
 // If parsing was not successuful, function return a structure with default options
-func GetFromGlobalConf(cf interface{}, defaultVal interface{}, whatParsed string) {
+func GetFromGlobalConf(cf interface{}, whatParsed string) {
 
 	file, e := ioutil.ReadFile(GetConfigFilename())
 	if e != nil {
@@ -31,11 +31,11 @@ func GetFromGlobalConf(cf interface{}, defaultVal interface{}, whatParsed string
 	if err := json.Unmarshal([]byte(file), cf); err != nil {
 		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON : [%s]. For [%s] will be used defaulf options.",
 			whatParsed, err.Error())
-		cf = defaultVal
 	} else {
 		log.Infof("Parsed [%s] configuration from [%s] file", whatParsed, GetConfigFilename())
+		log.Warn("If a field has wrong format, will be used default value.")
 	}
-	//log.Debugf("%v", cf)
+	log.Debugf("%v", cf)
 }
 
 // GetConfigFilename is a function fot getting a name of a binary with full path to it
