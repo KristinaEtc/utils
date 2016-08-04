@@ -19,7 +19,7 @@ func init() {
 
 // GetGlobalConf unmarshal json-object cf
 // If parsing was not successuful, function return a structure with default options
-func GetFromGlobalConf(cf interface{}, defaultVal interface{}) {
+func GetFromGlobalConf(cf interface{}, defaultVal interface{}, whatParsed string) {
 
 	file, e := ioutil.ReadFile(GetConfigFilename())
 	if e != nil {
@@ -27,10 +27,11 @@ func GetFromGlobalConf(cf interface{}, defaultVal interface{}) {
 	}
 
 	if err := json.Unmarshal([]byte(file), cf); err != nil {
-		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON: %s. Will be used defaulf options.", err.Error())
+		log.WithCaller(slf.CallerShort).Errorf("Error parsing JSON : %s. For %s will be used defaulf options.",
+			whatParsed, err.Error())
 		cf = defaultVal
 	} else {
-		log.Infof("Global options will be used from [%s] file", GetConfigFilename())
+		log.Infof("Parsed %s data from [%s] file", whatParsed, GetConfigFilename())
 	}
 	//log.Debugf("%v", cf)
 }
